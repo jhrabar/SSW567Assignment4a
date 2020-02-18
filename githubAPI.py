@@ -3,8 +3,8 @@ import json
 
 
 def getGithubInfo(username):
-	if(isinstance(username, str) == False):
-		return "Error: Username must be a valid string"
+	if(not username or not isinstance(username, str)):
+		return "Error: Username must be a valid, non-empty string"
 
 	response = requests.get("https://api.github.com/users/" + username + "/repos")
 
@@ -14,7 +14,7 @@ def getGithubInfo(username):
 	finalResult = ""
 
 	if(len(response.json()) < 1):
-		finalResult = "User " + username + " has no repositories"
+		finalResult = "User " + username + " has no repositories or does not exist"
 	else:
 		for repo in response.json():
 			repoResponse = requests.get("https://api.github.com/repos/" + username + "/" + repo['name'] + "/commits")
